@@ -1,0 +1,29 @@
+apply plugin: 'java-library'
+
+
+import org.gradle.internal.jvm.Jvm
+
+
+dependencies {
+    api 'org.apache.commons:commons-lang3:3.9'
+    api "com.squareup:javapoet:1.11.1"
+    testImplementation 'junit:junit:4.12'
+
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation files(Jvm.current().getToolsJar())
+
+}
+
+
+apply plugin: 'maven-publish'
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            groupId "org.appxmod.metaline"
+            artifactId "Metaline"
+            version "1.0.0"
+        }
+    }
+}
+build.finalizedBy publishToMavenLocal
