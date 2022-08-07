@@ -19,7 +19,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Set;
 
-@SupportedAnnotationTypes({"pl.baluch.forgeservercodestripper.StripeForClient"})
+@SupportedAnnotationTypes({"pl.baluch.forgeservercodestripper.StripForClient"})
 public final class StripMethodsProcessor extends AbstractProcessor {
 	private JavacElements elementUtils;
 	private Trees trees;
