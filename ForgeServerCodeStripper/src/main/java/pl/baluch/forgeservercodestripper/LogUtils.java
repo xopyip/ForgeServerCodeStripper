@@ -7,7 +7,7 @@ import java.io.PrintStream;
 
 class LogUtils {
 	public static void Log(Object... o) {
-		StringBuilder msg = new StringBuilder("> Metaline :");
+		StringBuilder msg = new StringBuilder("> ForgeServerCodeStripper :");
 		if(o!=null) {
 			for (Object o1 : o) {
 				if (o1 != null) {

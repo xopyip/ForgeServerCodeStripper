@@ -61,15 +61,8 @@ public final class StripMethodsProcessor extends AbstractProcessor {
 				if (trees!=null) {
 					TreePath treePath = trees.getPath(field);
 					JCTree.JCCompilationUnit compileUnit = (JCTree.JCCompilationUnit) treePath.getCompilationUnit();
-					int imports = compileUnit.getImports().size();
 					defs = new ArrayList<>(compileUnit.defs);
-					for (int i = 0, len=defs.size(); i <= len && imports>0; i++) {
-						JCTree obj = defs.get(i);
-						if (obj instanceof JCTree.JCImport) {
-							defs.remove(i); i--; len--;
-							imports--;
-						}
-					}
+					defs.removeIf(obj -> obj instanceof JCTree.JCImport || obj instanceof JCTree.JCAnnotation);
 					compileUnit.defs = List.from(defs);
 				}
 				JCTree.JCClassDecl laDcl = (JCTree.JCClassDecl) elementUtils.getTree(field);
