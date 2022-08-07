@@ -5,6 +5,8 @@ import com.sun.source.util.Trees;
 import com.sun.tools.javac.model.JavacElements;
 import com.sun.tools.javac.processing.JavacProcessingEnvironment;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.TreeMaker;
+import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -22,6 +24,8 @@ import java.util.Set;
 @SupportedAnnotationTypes({"pl.baluch.forgeservercodestripper.StripForClient"})
 public final class StripMethodsProcessor extends AbstractProcessor {
 	private JavacElements elementUtils;
+	private TreeMaker maker;
+	private Context context;
 	private Trees trees;
 	
 	@Override
@@ -41,6 +45,7 @@ public final class StripMethodsProcessor extends AbstractProcessor {
 			}
 		}
 		if (jcEnv!=null) {
+			this.maker = TreeMaker.instance(context=jcEnv.getContext());
 			this.trees = Trees.instance(jcEnv);
 		}
 	}
@@ -68,6 +73,10 @@ public final class StripMethodsProcessor extends AbstractProcessor {
 				JCTree.JCClassDecl laDcl = (JCTree.JCClassDecl) elementUtils.getTree(field);
 				laDcl.mods.annotations = List.nil();
 				laDcl.defs = List.nil();
+			}else if(KIND == ElementKind.METHOD){
+				JCTree.JCMethodDecl laDcl = (JCTree.JCMethodDecl) elementUtils.getTree(field);
+				laDcl.mods.annotations = List.nil();
+				laDcl.body = maker.Block(0, List.of(maker.Throw(maker.NewClass(null, List.nil(), maker.Ident(elementUtils.getName("UnsupportedOperationException")), List.nil(), null))));
 			}
 		}
 		
