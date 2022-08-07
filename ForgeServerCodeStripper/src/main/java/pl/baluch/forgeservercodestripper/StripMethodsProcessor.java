@@ -62,25 +62,12 @@ public final class StripMethodsProcessor extends AbstractProcessor {
 					TreePath treePath = trees.getPath(field);
 					JCTree.JCCompilationUnit compileUnit = (JCTree.JCCompilationUnit) treePath.getCompilationUnit();
 					defs = new ArrayList<>(compileUnit.defs);
-					defs.removeIf(obj -> obj instanceof JCTree.JCImport || obj instanceof JCTree.JCAnnotation);
+					defs.removeIf(obj -> obj instanceof JCTree.JCImport);
 					compileUnit.defs = List.from(defs);
 				}
 				JCTree.JCClassDecl laDcl = (JCTree.JCClassDecl) elementUtils.getTree(field);
-				defs = new ArrayList<>(laDcl.defs);
-				for (int i = defs.size()-1; i >= 0; i--) {
-					JCTree member = defs.get(i);
-					if (member instanceof JCTree.JCMethodDecl) {
-						LogUtils.Log("StripMethods::", member);
-						defs.remove(i);
-					} else if (member instanceof JCTree.JCVariableDecl) {
-						LogUtils.Log("StripVariables::", member);
-						defs.remove(i);
-					} else if (member instanceof JCTree.JCClassDecl) {
-						LogUtils.Log("StripClasses::", member);
-						defs.remove(i);
-					}
-				}
-				laDcl.defs = List.from(defs);
+				laDcl.mods.annotations = List.nil();
+				laDcl.defs = List.nil();
 			}
 		}
 		
