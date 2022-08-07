@@ -51,9 +51,9 @@ public final class StripMethodsProcessor extends AbstractProcessor {
 	
 	@Override
 	public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
-		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(StripeForClient.class);
+		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(StripForClient.class);
 		for (Element field : elements) {
-			StripeForClient annotation = field.getAnnotation(StripeForClient.class);
+			StripForClient annotation = field.getAnnotation(StripForClient.class);
 			ElementKind KIND = field.getKind();
 			LogUtils.Log("StripMethods::", annotation, KIND);
 			if(KIND == ElementKind.CLASS) {
